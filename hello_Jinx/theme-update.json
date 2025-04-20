@@ -1,6 +1,7 @@
 {
-    "version": "2.0.0",
-    "download_url": "https://github.com/ibrahemgit/theme/releases/download/v2.0.0/hello_Jinx.zip",
-    "requires": "6.0",
-    "requires_php": "7.4"
-}  
+  "version": "2.0.0",
+  "download_url": "https://github.com/ibrahemgit/theme_updater/releases/download/v2.0.0/hello_Jinx-2.zip",
+  "details_url": "https://github.com/ibrahemgit/theme_updater",
+  "requires": "6.0",
+  "requires_php": "7.4"
+}
