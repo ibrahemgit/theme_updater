@@ -1,8 +1,6 @@
 <?php
 
 
-
-
 function ib_files($asdasd){
     $theme_version = wp_get_theme()->get('Version');
 
@@ -87,8 +85,6 @@ function ib_theme_support(){
 	// remove_theme_support('post-formats');
     // add_filter('use_block_editor_for_post_type', '__return_false');
     // add_filter('gutenberg_can_edit_post_type', '__return_false');
-
-
     add_theme_support('title-tag');
 	add_theme_support('automatic-feed-links');
 	// add_theme_support('post-thumbnails');
@@ -125,17 +121,6 @@ add_action('wp_ajax_track_button_clicks', 'track_button_clicks'); // للمست�
 add_action('wp_ajax_nopriv_track_button_clicks', 'track_button_clicks'); // للمستخدمين غير المسجلين
 
 
-
-require get_template_directory() . '/inc/contact-us-page-functions.php';
-require get_template_directory() . '/inc/prepare.php';
-require get_template_directory() . '/inc/crateposttype.php';
-require get_template_directory() . '/inc/admin-pages.php';
-require get_template_directory() . '/inc/update.php';
-require get_template_directory() . '/inc/users.php';
-require get_template_directory() . '/inc/cusrole.php';
-require get_template_directory() . '/inc/ubdate-plugin.php';
-require get_template_directory() . '/inc/theme-prepare-to-ubdate.php';
-require get_template_directory() . '/inc/post-meta.php';
 
 
 add_action('init', function() {
@@ -193,11 +178,14 @@ add_action('init', function() {
 
 
 
-
-add_action('admin_notices', function() {
-    ?>
-    <div class="notice notice-success is-dismissible">
-        <p><?php _e('انت علي اخر تحديث اليدز هتروح لجوجل شيت.', 'text-domain'); ?></p>
-    </div>
-    <?php
-});
+require get_template_directory() . '/inc/contact-us-page-functions.php';
+require get_template_directory() . '/inc/prepare.php';
+require get_template_directory() . '/inc/crateposttype.php';
+require get_template_directory() . '/inc/admin-pages.php';
+require get_template_directory() . '/inc/update.php';
+require get_template_directory() . '/inc/users.php';
+require get_template_directory() . '/inc/cusrole.php';
+require get_template_directory() . '/inc/ubdate-plugin.php';
+require get_template_directory() . '/inc/theme-prepare-to-ubdate.php';
+require get_template_directory() . '/inc/post-meta.php';
+require get_template_directory() . '/inc/google-sheet-script.php';

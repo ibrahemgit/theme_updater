@@ -166,14 +166,36 @@ jQuery(document).ready(function($) {
     };
   
 
+
+    
+    $.ajax({
+      url: ajax_object.ajax_url,
+      type: 'POST',
+      dataType: 'json',
+      data: {
+          action: 'submit_to_google_form_action',
+          name: formData.name,
+          phone: formData.phone,
+          title: PTitle,
+          url: pUrl
+      },
+      success: function(response) {
+        console.log('✅ Response:', response);
+      },
+      error: function(xhr, status, error) {
+        console.error('❌ AJAX Error:', status, error);
+        console.error('Response Text:', xhr.responseText);
+      }
+    });
+    
+
+
     $.ajax({
         url: ajax_object.ajax_url,
         type: 'POST',
         data: formData,
         success: function(response) {
           
-          submitToGoogleForm(formData.name, formData.phone, PTitle, pUrl);
-
           form.find('input[type="text"], input[type="phone"]').val('');
 
           if (ajax_object.thank_you_url) {
@@ -184,6 +206,10 @@ jQuery(document).ready(function($) {
         error: function(xhr, status, error) {
         }
     });
+
+
+
+
   });
   
 
@@ -221,22 +247,3 @@ $('.towitem .subform').on('click', function() {
 
 
 
-
-function submitToGoogleForm(email, phone, title, url) {
-  var formData = new FormData();
-
-  formData.append("entry.1733048754", email); // حقل الإيميل
-  formData.append("entry.1559449813", phone); // حقل رقم التليفون
-  formData.append("entry.1705565888", title); // حقل العنوان
-  formData.append("entry.1596108963", url); // حقل الرابط
-
-  fetch("https://docs.google.com/forms/d/e/1FAIpQLSen9l9aAPnBQlCfJ3YrrUH9KQpWjbd8Wde0QQQ5BGeOGePVmQ/formResponse", {
-    method: "POST",
-    mode: "no-cors",
-    body: formData
-  }).then(response => {
-    console.log("✅ تم الإرسال بنجاح!");
-  }).catch(error => {
-    console.error("❌ حصل خطأ أثناء الإرسال", error);
-  });
-}

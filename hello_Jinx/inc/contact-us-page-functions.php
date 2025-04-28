@@ -30,7 +30,6 @@ function handle_contact_form() {
         $contact_methods = !empty($_POST['contact']) ? implode(", ", array_map('sanitize_text_field', $_POST['contact'])) : 'لم يتم اختيار طريقه للتواصل';
         $post_id = isset($_POST['post_id']) ? intval($_POST['post_id']) : 0;
 
-
         $enable_contact = get_post_meta($post_id, 'enable_contact', true);
 
         if ($enable_contact) {
@@ -87,7 +86,6 @@ function handle_contact_form() {
 		}
 
 
-
         $post_email   = get_post_meta($post_id, 'contact_email', true);
         $custom_email = get_option('custom_email');
         
@@ -107,16 +105,16 @@ function handle_contact_form() {
             wp_mail($final_email, $subject, $body, $headers);
         }
 	
-
     // تحقق إذا لم يتم العثور على رابط
 	echo json_encode(array(
 		'status' => 'success',
 		'message' => ' <i class="fa fa-check" aria-hidden="true"></i> تم إرسال الرسالة بنجاح. شكرًا لتواصلك معنا!',
 	));
-
-
+    
     wp_die();
 }
+
+
 
 #############################
 ####  crate new tb in db
