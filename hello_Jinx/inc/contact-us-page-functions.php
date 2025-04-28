@@ -28,6 +28,14 @@ function handle_contact_form() {
         $timeZone  = sanitize_textarea_field($_POST['timeZone']?? "") ;
         $pageTitle  = sanitize_textarea_field($_POST['pageTitle']?? "") ;
         $contact_methods = !empty($_POST['contact']) ? implode(", ", array_map('sanitize_text_field', $_POST['contact'])) : 'لم يتم اختيار طريقه للتواصل';
+        $post_id = isset($_POST['post_id']) ? intval($_POST['post_id']) : 0;
+
+
+        $enable_contact = get_post_meta($post_id, 'enable_contact', true);
+
+        if ($enable_contact) {
+            $pageTitle = $pageTitle . " - Conv ";
+        }
 
         $subject = 'رسالة جديدة من الموقع';
         $body = "الاسم: $name\n";
@@ -79,22 +87,25 @@ function handle_contact_form() {
 		}
 
 
+
+        $post_email   = get_post_meta($post_id, 'contact_email', true);
         $custom_email = get_option('custom_email');
-        $admin_email = get_option('admin_email');
         
-        if (empty($custom_email) || !is_email($custom_email)) {
-            $custom_email = $admin_email;
+        // الترتيب: meta ➤ option ➤ fallback
+        if (!empty($post_email) && is_email($post_email)) {
+            $final_email = $post_email;
+        } elseif (!empty($custom_email) && is_email($custom_email)) {
+            $final_email = $custom_email;
+        } else {
+            $final_email = 'boldd.routes@gmail.com';
         }
         
         $headers = array('Content-Type: text/plain; charset=UTF-8');
         
-        if (is_email($custom_email)) {
-            error_log($custom_email);
-            wp_mail($custom_email, $subject, $body, $headers);
+        if (is_email($final_email)) {
+            error_log($final_email); // للديباج فقط
+            wp_mail($final_email, $subject, $body, $headers);
         }
-        
-        
-	
 	
 
     // تحقق إذا لم يتم العثور على رابط
@@ -196,6 +207,7 @@ function render_contact_form_admin_page() {
                 <th>عنوان الصفحة</th>
                 <th>تم التواصل</th>
                 <th>عرض الليد كامل</th>
+                <th>حذف</th> <!-- العمود الجديد -->
             </tr>
         </thead>';
     echo '<tbody>';
@@ -209,6 +221,7 @@ function render_contact_form_admin_page() {
             echo '<td>' . esc_html($row->page_title) . '</td>';
             echo '<td>' . ($row->contacted ? 'نعم' : 'لا') . '</td>';
             echo '<td><button class="open-popup" data-row=\'' . json_encode($row) . '\'>عرض</button></td>';
+            echo '<td><button class="delete-lead" data-id="' . esc_attr($row->id) . '">حذف</button></td>';
             echo '</tr>';
         }
     } else {
@@ -244,8 +257,44 @@ function render_contact_form_admin_page() {
 
     echo '</div>';
 
+
 }
 add_action('wp_ajax_update_contacted_status', 'update_contacted_status');
+
+
+// AJAX handler لحذف الليد
+add_action('wp_ajax_delete_lead', 'delete_lead_callback');
+
+function delete_lead_callback() {
+    // التحقق من صلاحيات المستخدم
+    if (!current_user_can('manage_options')) {
+        wp_send_json_error('غير مصرح لك بهذا الإجراء');
+    }
+
+    // التحقق من وجود الـ ID
+    if (!isset($_POST['lead_id']) || empty($_POST['lead_id'])) {
+        wp_send_json_error('معرّف الليد غير صالح');
+    }
+
+    global $wpdb;
+    $table_name = $wpdb->prefix . 'ib_contact_form_data';
+    $lead_id = intval($_POST['lead_id']);
+
+    // تنفيذ عملية الحذف
+    $result = $wpdb->delete(
+        $table_name,
+        ['id' => $lead_id],
+        ['%d']
+    );
+
+    if ($result === false) {
+        wp_send_json_error('فشل في حذف الليد');
+    }
+
+    wp_send_json_success('تم الحذف بنجاح');
+}
+
+
 
 
 function update_contacted_status() {

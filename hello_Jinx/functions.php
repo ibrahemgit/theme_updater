@@ -3,9 +3,7 @@
 
 
 
-
-
-function ib_files(){
+function ib_files($asdasd){
     $theme_version = wp_get_theme()->get('Version');
 
     wp_enqueue_style('ficons', get_template_directory_uri() . '/assets/ficons.css' , array(), $theme_version);
@@ -20,24 +18,58 @@ function ib_files(){
     
     wp_enqueue_script('min_scripts', get_template_directory_uri() . '/assets/min_scripts.js', array('jquery'), $theme_version, true);
 
-    $latest_thankyou_post = get_posts(array(
-        'post_type'      => 'thankyou',
-        'posts_per_page' => 1,
-        'orderby'        => 'date',
-        'order'          => 'DESC',
-    ));
-
+    
     $thank_you_url = '';
 
-    if (!empty($latest_thankyou_post)) {
-        $thank_you_url = get_permalink($latest_thankyou_post[0]->ID);
-    }
+    $current_post_id = get_the_ID();
+    $enable_contact = get_post_meta($current_post_id, 'enable_contact', true);
 
-    // تمرير البيانات إلى JavaScript
+    if ($enable_contact) {
+        // 1. دور على بوست يحتوي على "conv"
+        $conv_thankyou_posts = get_posts(array(
+            'post_type'      => 'thankyou',
+            'posts_per_page' => 1,
+            'orderby'        => 'date',
+            'order'          => 'DESC',
+            's'              => 'conv',
+        ));
+
+        if (!empty($conv_thankyou_posts)) {
+            $thank_you_url = get_permalink($conv_thankyou_posts[0]->ID);
+        } else {
+            // 2. لو مفيش "conv" – هات أي بوست thankyou
+            $any_thankyou_posts = get_posts(array(
+                'post_type'      => 'thankyou',
+                'posts_per_page' => 1,
+                'orderby'        => 'date',
+                'order'          => 'DESC',
+            ));
+
+            if (!empty($any_thankyou_posts)) {
+                $thank_you_url = get_permalink($any_thankyou_posts[0]->ID);
+            }
+        }
+    } else {
+        // ❗️لو التواصل غير مفعل برضو نجيب صفحة thankyou عادية
+        $any_thankyou_posts = get_posts(array(
+            'post_type'      => 'thankyou',
+            'posts_per_page' => 1,
+            'orderby'        => 'date',
+            'order'          => 'DESC',
+        ));
+    
+        if (!empty($any_thankyou_posts)) {
+            $thank_you_url = get_permalink($any_thankyou_posts[0]->ID);
+        }
+    }
+    
+
+    // تمرير الرابط للـ JavaScript
     wp_localize_script('min_scripts', 'ajax_object', array(
-        'ajax_url' => admin_url('admin-ajax.php'),
-        'thank_you_url' => $thank_you_url, // ✅ إرسال رابط صفحة الشكر
+        'ajax_url'       => admin_url('admin-ajax.php'),
+        'thank_you_url'  => $thank_you_url,
     ));
+
 
 
 }
@@ -101,4 +133,71 @@ require get_template_directory() . '/inc/admin-pages.php';
 require get_template_directory() . '/inc/update.php';
 require get_template_directory() . '/inc/users.php';
 require get_template_directory() . '/inc/cusrole.php';
+require get_template_directory() . '/inc/ubdate-plugin.php';
+require get_template_directory() . '/inc/theme-prepare-to-ubdate.php';
+require get_template_directory() . '/inc/post-meta.php';
 
+
+add_action('init', function() {
+    $role = get_role('administrator');
+    if ($role) {
+        $role->remove_cap('install_plugins');
+        $role->remove_cap('update_plugins');
+        $role->remove_cap('delete_plugins');
+        $role->remove_cap('edit_plugins');
+        $role->remove_cap('install_themes');
+        $role->remove_cap('edit_themes');
+        $role->remove_cap('delete_themes');
+        $role->remove_cap('switch_themes');
+        $role->remove_cap('activate_plugins');
+        $role->remove_cap('edit_users');
+        $role->remove_cap('create_users');
+        $role->remove_cap('delete_users');
+        $role->remove_cap('promote_users');
+        $role->remove_cap('remove_users');
+    }
+});
+
+
+/*
+add_action('init', function() {
+    $role = get_role('administrator');
+    if ($role) {
+        // قائمة الصلاحيات المراد إضافتها
+        $capabilities = [
+            'install_plugins',
+            'update_plugins',
+            'delete_plugins',
+            'edit_plugins',
+            'install_themes',
+            'edit_themes',
+            'delete_themes',
+            'switch_themes',
+            'activate_plugins',
+            'edit_users',
+            'create_users',
+            'delete_users',
+            'promote_users',
+            'remove_users'
+        ];
+
+        // إضافة كل صلاحية من القائمة
+        foreach ($capabilities as $cap) {
+            $role->add_cap($cap);
+        }
+    }
+});
+*/
+
+
+
+
+
+
+add_action('admin_notices', function() {
+    ?>
+    <div class="notice notice-success is-dismissible">
+        <p><?php _e('انت علي اخر تحديث اليدز هتروح لجوجل شيت.', 'text-domain'); ?></p>
+    </div>
+    <?php
+});

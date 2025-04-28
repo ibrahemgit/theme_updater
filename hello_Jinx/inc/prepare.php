@@ -51,21 +51,64 @@ function auto_install_plugins_on_theme_activation() {
     if (file_exists(WP_PLUGIN_DIR . '/' . $sitekit_main_file) && !is_plugin_active($sitekit_main_file)) {
         activate_plugin($sitekit_main_file);
     }
-}
 
-// إنشاء بوست thankyou وقت تفعيل الثيم
-function create_thxyou_post_on_theme_activation() {
-    $existing_post = get_page_by_title('thankyou', OBJECT, 'thankyou');
-
-    if (!$existing_post) {
-        $post_data = array(
-            'post_title'    => 'thankyou',
-            'post_status'   => 'publish',
-            'post_type'     => 'thankyou'
-        );
-
-        wp_insert_post($post_data);
+    
+    // =======================================
+    // 3. Facebook Pixel – Official Plugin
+    // =======================================
+    $facebook_pixel_slug      = 'official-facebook-pixel';
+    $facebook_pixel_main_file = 'official-facebook-pixel/facebook-pixel.php';
+    $plugin_path              = WP_PLUGIN_DIR . '/' . $facebook_pixel_slug;
+    
+    if (!is_dir($plugin_path)) {
+        $upgrader = new Plugin_Upgrader(new Automatic_Upgrader_Skin());
+        $upgrader->install('https://downloads.wordpress.org/plugin/' . $facebook_pixel_slug . '.latest-stable.zip');
     }
+    
+    // // بعد ما يخلص التحميل، اتأكد إن الملف فعلاً موجود قبل التفعيل
+    // if (file_exists(WP_PLUGIN_DIR . '/' . $facebook_pixel_main_file)) {
+    //     if (!is_plugin_active($facebook_pixel_main_file)) {
+    //         activate_plugin($facebook_pixel_main_file);
+    //     }
+    // }
+
 }
 
-add_action('after_switch_theme', 'create_thxyou_post_on_theme_activation');
+function create_custom_thankyou_posts_on_theme_activation() {
+    // نستخدم option لتتبع هل البوستات اتعملت قبل كده
+    if (get_option('custom_thankyou_posts_created_thx')) {
+        return; // خلاص اتعملت قبل كده
+    }
+
+    // ✅ حذف كل البوستات القديمة من نوع thankyou
+    $existing_posts = get_posts(array(
+        'post_type'      => 'thankyou',
+        'posts_per_page' => -1,
+        'post_status'    => 'any',
+    ));
+
+    foreach ($existing_posts as $post) {
+        wp_delete_post($post->ID, true); // true = حذف نهائي
+    }
+
+    // 1. إنشاء بوست conv
+    $conv_post = array(
+        'post_title'   => 'thankyou-conv',
+        'post_status'  => 'publish',
+        'post_type'    => 'thankyou',
+    );
+    wp_insert_post($conv_post);
+
+    // 2. إنشاء بوست عادي
+    $normal_post = array(
+        'post_title'   => 'thankyou-norm',
+        'post_status'  => 'publish',
+        'post_type'    => 'thankyou',
+    );
+    wp_insert_post($normal_post);
+
+    // حفظ إنهم اتعملوا خلاص
+    update_option('custom_thankyou_posts_created_thx', true);
+}
+
+add_action('after_switch_theme', 'create_custom_thankyou_posts_on_theme_activation');

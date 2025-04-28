@@ -928,3 +928,7 @@ h2.pjc-title {
     padding-top: 20px;
     border-top: 1px solid #eee;
 }
+
+.ph-content p {
+    margin-bottom: 15px;
+}

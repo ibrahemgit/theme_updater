@@ -1,5 +1,27 @@
+jQuery(document).ready(function($) {
+    $(".delete-lead").on("click", function(e) {
+        e.preventDefault();
+        var leadId = $(this).data("id");
+        if (confirm("يسطي انت متاكد انك هتحذف الليد ده ؟")) {
+            $.ajax({
+                url: ajax_object.ajax_url,
+                type: "POST",
+                data: {
+                    action: "delete_lead",
+                    lead_id: leadId
+                },
+                success: function(response) {
+                    if (response.success) {
+                        location.reload();
+                    } else {
+                        alert(response.data);
+                    }
+                }
+            });
+        }
+    });
+});
 
-/* admin conect form update_contacted_status  */
 
 jQuery(document).ready(function($) {
     $('.contacted-checkbox').on('change', function() {

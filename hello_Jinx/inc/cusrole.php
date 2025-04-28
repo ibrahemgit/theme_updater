@@ -1,45 +1,108 @@
 <?php
         // remove_role('ib_sub_admin'); // حذف الرول الحالي
 
-function create_ib_sub_admin_role() {
-    // التأكد من أن الرول غير موجود بالفعل
-    if (!get_role('ib_sub_admin')) {
-        // إضافة الرول الجديد
-        add_role(
-            'ib_sub_admin', // اسم الرول
-            'Ib Sub Admin', // الاسم الظاهر للرول
-            array(
-                // الصلاحيات المتاحة للمستخدمين في هذا الرول
-                'read' => true, // الصلاحية الأساسية لقراءة المحتوى
-                'edit_posts' => true, // التعديل على المقالات
-                'edit_pages' => true, // التعديل على الصفحات
-                'edit_others_posts' => true, // التعديل على المقالات الخاصة بالآخرين
-                'delete_posts' => true, // حذف المقالات
-                'delete_others_posts' => true, // حذف مقالات الآخرين
-                'publish_posts' => true, // نشر المقالات
-                'edit_private_posts' => true, // تعديل المقالات الخاصة
-                'edit_published_posts' => true, // تعديل المقالات المنشورة
-                'read_private_posts' => true, // قراءة المقالات الخاصة
-                'edit_private_pages' => true, // تعديل الصفحات الخاصة
-                'edit_published_pages' => true, // تعديل الصفحات المنشورة
-                'read_private_pages' => true, // قراءة الصفحات الخاصة
-                'manage_options' => true, // لا يمكن إدارة الإعدادات
-                'install_plugins' => false, // لا يمكن تحميل الإضافات
-                'update_plugins' => false, // لا يمكن تحديث الإضافات
-                'delete_plugins' => false, // لا يمكن حذف الإضافات
-                'edit_plugins' => false, // لا يمكن تعديل الإضافات
-                'install_themes' => false, // لا يمكن رفع ثيمات
-                'edit_themes' => false, // لا يمكن تعديل الثيمات
-                'delete_themes' => false, // لا يمكن حذف الثيمات
-                'switch_themes' => false, // لا يمكن تغيير الثيم النشط
-                'activate_plugins' => false, // لا يمكن تفعيل/تعطيل الإضافات
-                'edit_users' => false, // لا يمكن تعديل المستخدمين
-                'create_users' => false, // لا يمكن إضافة مستخدمين جدد
-                'delete_users' => false, // لا يمكن حذف مستخدمين
-                'promote_users' => false, // لا يمكن ترقية أو تعديل رتبة المستخدمين
-                'remove_users' => false, // لا يمكن إزالة مستخدمين من الأدوار
-            )
-        );
-    }
-}
-add_action('init', 'create_ib_sub_admin_role');
+        function create_mega_admin_role() {
+            // حذف الدور إذا كان موجود مسبقًا (لإعادة ضبط الصلاحيات)
+            if (get_role('mega_admin')) {
+                remove_role('mega_admin');
+            }
+        
+            // إنشاء الدور الجديد بكل الصلاحيات الأساسية
+            add_role(
+                'mega_admin',
+                'Mega Admin',
+                array(
+                    'read' => true,
+                    'upload_files' => true, 
+                    'edit_posts' => true,
+                    'edit_others_posts' => true,
+                    'edit_published_posts' => true,
+                    'edit_private_posts' => true,
+                    'publish_posts' => true,
+                    'delete_posts' => true,
+                    'delete_others_posts' => true,
+                    'delete_published_posts' => true,
+                    'delete_private_posts' => true,
+                    'read_private_posts' => true,
+                    'edit_pages' => true,
+                    'edit_others_pages' => true,
+                    'edit_published_pages' => true,
+                    'edit_private_pages' => true,
+                    'publish_pages' => true,
+                    'delete_pages' => true,
+                    'delete_others_pages' => true,
+                    'delete_published_pages' => true,
+                    'delete_private_pages' => true,
+                    'read_private_pages' => true,
+                    'manage_categories' => true,
+                    'manage_links' => true,
+                    'moderate_comments' => true,
+                    'manage_options' => true,
+                    'edit_theme_options' => true,
+                    'edit_plugins' => true,
+                    'install_plugins' => true,
+                    'update_plugins' => true,
+                    'delete_plugins' => true,
+                    'activate_plugins' => true,
+                    'edit_themes' => true,
+                    'install_themes' => true,
+                    'update_themes' => true,
+                    'delete_themes' => true,
+                    'switch_themes' => true,
+                    'edit_users' => true,
+                    'create_users' => true,
+                    'delete_users' => true,
+                    'promote_users' => true,
+                    'remove_users' => true,
+                    'list_users' => true,
+                    'add_users' => true,
+                    'edit_files' => true,
+                    'edit_dashboard' => true,
+                    'customize' => true,
+                    'unfiltered_html' => true,
+                    'edit_private_pages' => true,
+                    'edit_private_posts' => true,
+                    'delete_private_pages' => true,
+                    'delete_private_posts' => true,
+                    'edit_published_pages' => true,
+                    'edit_published_posts' => true,
+                    'delete_published_pages' => true,
+                    'delete_published_posts' => true,
+                    'edit_others_pages' => true,
+                    'edit_others_posts' => true,
+                    'delete_others_pages' => true,
+                    'delete_others_posts' => true,
+                    'manage_options' => true,
+                    'manage_links' => true,
+                    'moderate_comments' => true,
+                    'edit_dashboard' => true,
+                    'update_core' => true,
+                    'export' => true,
+                    'import' => true,
+                    'list_users' => true,
+                    'remove_users' => true,
+                    'add_users' => true,
+                    'create_users' => true,
+                    'delete_users' => true,
+                    'edit_users' => true,
+                    'promote_users' => true,
+                    'edit_theme_options' => true,
+                    'edit_plugins' => true,
+                    'edit_themes' => true,
+                    'install_plugins' => true,
+                    'install_themes' => true,
+                    'update_plugins' => true,
+                    'update_themes' => true,
+                    'delete_plugins' => true,
+                    'delete_themes' => true,
+                    'activate_plugins' => true,
+                    'switch_themes' => true,
+                    'edit_files' => true,
+                    'edit_dashboard' => true,
+                    'unfiltered_html' => true,
+                    // أضف أي صلاحية أخرى تحتاجها هنا
+                )
+            );
+        }
+        add_action('init', 'create_mega_admin_role');
+        

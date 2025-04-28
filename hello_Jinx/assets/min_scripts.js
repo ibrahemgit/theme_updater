@@ -142,8 +142,11 @@ jQuery(document).ready(function($) {
     var ifprshorshort = form.hasClass('prshorshort');
     var ifunitform = form.hasClass('unform');
     var timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-    var pageTitle = document.title + "\n -- \n" + cleanURL(location.href);
-    var post_id = $('.project_header').attr('data_id');
+    var pUrl = cleanURL(location.href);
+    var PTitle = document.title;
+    var pageTitle = PTitle + "\n -- \n" + pUrl;
+    var post_id = $('body').attr('id');
+    
     var formData = {
         action: 'submit_contact_form', 
         name: form.find('input[name="name"]').val(), 
@@ -168,10 +171,15 @@ jQuery(document).ready(function($) {
         type: 'POST',
         data: formData,
         success: function(response) {
+          
+          submitToGoogleForm(formData.name, formData.phone, PTitle, pUrl);
+
           form.find('input[type="text"], input[type="phone"]').val('');
 
-
-          window.location.href = ajax_object.thank_you_url;
+          if (ajax_object.thank_you_url) {
+              window.open(ajax_object.thank_you_url, '_blank');
+          }
+          
         },
         error: function(xhr, status, error) {
         }
@@ -213,3 +221,22 @@ $('.towitem .subform').on('click', function() {
 
 
 
+
+function submitToGoogleForm(email, phone, title, url) {
+  var formData = new FormData();
+
+  formData.append("entry.1733048754", email); // حقل الإيميل
+  formData.append("entry.1559449813", phone); // حقل رقم التليفون
+  formData.append("entry.1705565888", title); // حقل العنوان
+  formData.append("entry.1596108963", url); // حقل الرابط
+
+  fetch("https://docs.google.com/forms/d/e/1FAIpQLSen9l9aAPnBQlCfJ3YrrUH9KQpWjbd8Wde0QQQ5BGeOGePVmQ/formResponse", {
+    method: "POST",
+    mode: "no-cors",
+    body: formData
+  }).then(response => {
+    console.log("✅ تم الإرسال بنجاح!");
+  }).catch(error => {
+    console.error("❌ حصل خطأ أثناء الإرسال", error);
+  });
+}
