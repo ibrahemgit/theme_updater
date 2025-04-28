@@ -1,63 +1,65 @@
 <?php
 // 1. تسجيل post meta
 function register_contact_fields_meta() {
-    // إيميل
-    register_post_meta('post', 'contact_email', array(
-        'show_in_rest'      => false,
-        'single'            => true,
-        'type'              => 'string',
-        'sanitize_callback' => 'sanitize_email',
-        'auth_callback'     => function() {
-            return current_user_can('edit_post', get_the_ID());
-        },
-    ));
+    $post_types = array('post', 'page'); // الأنواع المستهدفة
 
-    // هاتف
-    register_post_meta('post', 'contact_phone', array(
-        'show_in_rest'      => false,
-        'single'            => true,
-        'type'              => 'string',
-        'sanitize_callback' => 'sanitize_text_field',
-        'auth_callback'     => function() {
-            return current_user_can('edit_post', get_the_ID());
-        },
-    ));
+    foreach ($post_types as $post_type) {
+        register_post_meta($post_type, 'contact_email', array(
+            'show_in_rest'      => false,
+            'single'            => true,
+            'type'              => 'string',
+            'sanitize_callback' => 'sanitize_email',
+            'auth_callback'     => function() {
+                return current_user_can('edit_post', get_the_ID());
+            },
+        ));
 
-    // واتساب
-    register_post_meta('post', 'contact_whatsapp', array(
-        'show_in_rest'      => false,
-        'single'            => true,
-        'type'              => 'string',
-        'sanitize_callback' => 'sanitize_text_field',
-        'auth_callback'     => function() {
-            return current_user_can('edit_post', get_the_ID());
-        },
-    ));
+        register_post_meta($post_type, 'contact_phone', array(
+            'show_in_rest'      => false,
+            'single'            => true,
+            'type'              => 'string',
+            'sanitize_callback' => 'sanitize_text_field',
+            'auth_callback'     => function() {
+                return current_user_can('edit_post', get_the_ID());
+            },
+        ));
 
-    // Checkbox: تفعيل التواصل
-    register_post_meta('post', 'enable_contact', array(
-        'show_in_rest'      => false,
-        'single'            => true,
-        'type'              => 'boolean',
-        'sanitize_callback' => 'rest_sanitize_boolean',
-        'auth_callback'     => function() {
-            return current_user_can('edit_post', get_the_ID());
-        },
-    ));
+        register_post_meta($post_type, 'contact_whatsapp', array(
+            'show_in_rest'      => false,
+            'single'            => true,
+            'type'              => 'string',
+            'sanitize_callback' => 'sanitize_text_field',
+            'auth_callback'     => function() {
+                return current_user_can('edit_post', get_the_ID());
+            },
+        ));
+
+        register_post_meta($post_type, 'enable_contact', array(
+            'show_in_rest'      => false,
+            'single'            => true,
+            'type'              => 'boolean',
+            'sanitize_callback' => 'rest_sanitize_boolean',
+            'auth_callback'     => function() {
+                return current_user_can('edit_post', get_the_ID());
+            },
+        ));
+    }
 }
 add_action('init', 'register_contact_fields_meta');
 
 
 // 2. إضافة الميتا بوكس
 function add_contact_fields_metabox() {
-    add_meta_box(
-        'contact_info_meta_box',
-        'بيانات التواصل',
-        'render_contact_fields_metabox',
-        'post',
-        'side',
-        'default'
-    );
+    foreach (['post', 'page'] as $post_type) {
+        add_meta_box(
+            'contact_info_meta_box',
+            'بيانات التواصل',
+            'render_contact_fields_metabox',
+            $post_type,
+            'side',
+            'default'
+        );
+    }    
 }
 add_action('add_meta_boxes', 'add_contact_fields_metabox');
 
