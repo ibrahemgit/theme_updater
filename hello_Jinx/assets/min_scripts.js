@@ -202,7 +202,7 @@ jQuery(document).ready(function($) {
           form.find('input[type="text"], input[type="phone"]').val('');
 
           if (ajax_object.thank_you_url) {
-              window.open(ajax_object.thank_you_url, '_blank');
+            window.location.href = ajax_object.thank_you_url;
           }
           
         },
