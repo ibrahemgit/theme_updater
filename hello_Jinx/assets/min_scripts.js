@@ -166,6 +166,7 @@ jQuery(document).ready(function($) {
     };
   
 
+    console.log(ajax_object);  // اطبع اسم الكاتب هنا في وحدة التحكم
 
     
     $.ajax({
@@ -177,7 +178,9 @@ jQuery(document).ready(function($) {
           name: formData.name,
           phone: formData.phone,
           title: PTitle,
-          url: pUrl
+          url: pUrl,
+          zone : timeZone,
+          team: ajax_object.author_name,
       },
       success: function(response) {
         console.log('✅ Response:', response);
