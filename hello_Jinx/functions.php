@@ -1,18 +1,19 @@
 <?php
 
 
+
 function ib_files($asdasd){
     $theme_version = wp_get_theme()->get('Version');
 
-    wp_enqueue_style('ficons', get_template_directory_uri() . '/assets/ficons.css' , array(), $theme_version);
+    // wp_enqueue_style('ficons', get_template_directory_uri() . '/assets/ficons.css' , array(), $theme_version);
     
     wp_enqueue_style('slick', get_template_directory_uri() . '/assets/slick/slick.css' , array(), $theme_version);
 
     wp_enqueue_script('slick-js', get_template_directory_uri() . '/assets/slick/slick.js', array('jquery'), $theme_version, true);
     
-    wp_enqueue_style('min_style', get_template_directory_uri() . '/assets/min_style.css' , array(), $theme_version);
+    // wp_enqueue_style('min_style', get_template_directory_uri() . '/assets/min_style.css' , array(), $theme_version);
 
-    wp_enqueue_style('responsive', get_template_directory_uri() . '/assets/responsive.css' , array(), $theme_version);
+    // wp_enqueue_style('responsive', get_template_directory_uri() . '/assets/responsive.css' , array(), $theme_version);
     
     wp_enqueue_script('min_scripts', get_template_directory_uri() . '/assets/min_scripts.js', array('jquery'), $theme_version, true);
 
@@ -186,9 +187,6 @@ function get_author_name_with_default() {
     $author_login = get_the_author_meta('user_login', $author_id);
 
     // تتبع القيم
-    error_log('Author ID: ' . $author_id);
-    error_log('Author Login: ' . $author_login);
-
     if (array_key_exists($author_login, $custom_authors)) {
         return $custom_authors[$author_login];
     }

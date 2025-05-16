@@ -48,7 +48,9 @@ function validatePhoneInput(input) {
 
 jQuery(document).ready(function($) {
 
-  $('.projects_slide').slick({
+
+
+  $('.gallery_images').slick({
     rtl: true, // تفعيل دعم RTL
     autoplay: true,
     accessibility: true, // هذه القيمة تمكن الوصول وتحسن التوافق مع ARIA
@@ -74,35 +76,36 @@ jQuery(document).ready(function($) {
       }
     ]
   });
-
-  $('.gallry_imgs').slick({
-    rtl: true, // دعم RTL
+$('.gallry_logos').slick({
+    rtl: true,
     autoplay: true,
     accessibility: true,
     dots: false,
     infinite: true,
     speed: 500,
-    slidesToShow: 3, // عرض 3 لوجوهات فقط في نفس الوقت
+    slidesToShow: 6, // عدد أكبر افتراضياً على الشاشات العريضة
     slidesToScroll: 1,
-    centerMode: true, // تفعيل وضع المركزية
-    variableWidth: true, // السماح للأحجام المتغيرة
-    focusOnSelect: true, // تمكين التركيز عند النقر
-    arrows: true,
+    centerMode: false, // إلغاء المركزية لتفادي المشاكل على الهواتف
+    variableWidth: false, // إلغاء الأحجام المتغيرة لجعل التخطيط أنظف
+    arrows: false,
     responsive: [
-      {
-        breakpoint: 1024, // للشاشات المتوسطة
-        settings: {
-          slidesToShow: 3,
-              infinite: true,
-              centerMode: true
-            }
-          },
-          {
-            breakpoint: 768, // للشاشات الصغيرة
+        {
+            breakpoint: 1024,
             settings: {
-                infinite: true,
+                slidesToShow: 4
+            }
+        },
+        {
+            breakpoint: 768,
+            settings: {
+                slidesToShow: 3
+            }
+        },
+        {
+            breakpoint: 480,
+            settings: {
                 slidesToShow: 2,
-                centerMode: true
+                arrows: false // يمكن إخفاء الأسهم في الشاشات الصغيرة
             }
         }
     ]
@@ -166,7 +169,6 @@ jQuery(document).ready(function($) {
     };
   
 
-    console.log(ajax_object);  // اطبع اسم الكاتب هنا في وحدة التحكم
 
     
     $.ajax({
@@ -183,11 +185,8 @@ jQuery(document).ready(function($) {
           team: ajax_object.author_name,
       },
       success: function(response) {
-        console.log('✅ Response:', response);
       },
       error: function(xhr, status, error) {
-        console.error('❌ AJAX Error:', status, error);
-        console.error('Response Text:', xhr.responseText);
       }
     });
     
@@ -235,17 +234,23 @@ $('.flx-thx').click(function(){
 
 
 
-
-$('.aqaarop .close, .aqaarop .bgclos').on('click', function() {
-  $('.aqaarop').removeClass('active');
+$('.popubleadformover, span.closepop').on('click', function() {
+  $('.popubleadform').toggleClass('active');
 });
+
+$('.subform').on('click', function() {
+  $('.popubleadform').toggleClass('active');
+});
+
 
 $('.towitem .subform').on('click', function() {
   $('.aqaarop').addClass('active');
 });
 
-});
 
+
+
+});
 
 
 
