@@ -15,7 +15,7 @@
                     </div>
                     <div class="cusinpput">
                         <label for="phone">رقم الهاتف *</label>
-                        <input placeholder="رقم الهاتف" type="tel" id="phone" name="phone" required />
+                        <input placeholder="رقم الهاتف"  oninput="validatePhoneInput(this)" type="tel" id="phone" name="phone" required />
                     </div>
                     <button class='submit' type="submit" style="background-color: #0073aa; color: #fff;">
                         إرسال
