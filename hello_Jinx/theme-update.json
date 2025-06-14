@@ -1,7 +1,7 @@
 {
-    "version": "2.0.8",
+    "version": "2.1.0",
     "download_url": "https://github.com/ibrahemgit/theme_updater/raw/refs/heads/main/hello_Jinx.zip",
     "details_url": "https://github.com/ibrahemgit/theme_updater",
     "requires": "6.0",
     "requires_php": "7.4"
-  }
+}

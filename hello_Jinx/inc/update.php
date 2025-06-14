@@ -1,18 +1,33 @@
 <?php 
 function check_theme_update_from_github_json($transient) {
 
+    // تحديد اسم الثيم
+    $theme_slug = 'hello_Jinx';
 
-    // تأكد أن هناك ثيمات مثبتة
+    // صفحات مسموح فيها التحقق من التحديث
+    $allowed_pages = [
+        'themes.php',
+        'update-core.php',
+        'update.php',
+        'admin-ajax.php',
+    ];
+
+    $current_page = basename($_SERVER['PHP_SELF']);
+
+    // ✅ لو مش في صفحة ضرورية، لا تعمل شيء
+    if (!in_array($current_page, $allowed_pages)) {
+        return $transient;
+    }
+
+    // ✅ تأكد أن هناك ثيمات مثبتة
     if (empty($transient->checked)) {
         return $transient;
     }
 
-    // اسم مجلد الثيم
-    $theme_slug = 'hello_Jinx';
     $theme_data = wp_get_theme($theme_slug);
     $current_version = $theme_data->get('Version');
 
-    // رابط ملف JSON على GitHub (raw)
+    // رابط ملف JSON على GitHub
     $json_url = 'https://raw.githubusercontent.com/ibrahemgit/theme_updater/main/hello_Jinx/theme-update.json';
 
     // جلب بيانات التحديث
