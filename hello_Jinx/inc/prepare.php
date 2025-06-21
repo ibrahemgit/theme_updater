@@ -22,7 +22,6 @@ function auto_install_plugins_on_theme_activation() {
             $result = $upgrader->install($plugin_zip_url_github);
 
             if (!is_wp_error($result)) {
-                // أعد تسمية فولدر البلجن لو نزل باسم مختلف
                 $source_folder = WP_PLUGIN_DIR . '/' . $plugin_folder_github . '-main';
                 $final_folder  = WP_PLUGIN_DIR . '/' . $plugin_folder_github;
 
@@ -37,41 +36,40 @@ function auto_install_plugins_on_theme_activation() {
         activate_plugin($plugin_main_file_github);
     }
 
-    // ===========================
-    // 2. بلجن Google Site Kit
-    // ===========================
-    $sitekit_slug      = 'google-site-kit';
-    $sitekit_main_file = 'google-site-kit/google-site-kit.php';
 
-    if (!is_dir(WP_PLUGIN_DIR . '/' . $sitekit_slug)) {
-        $upgrader = new Plugin_Upgrader(new WP_Ajax_Upgrader_Skin());
-        $upgrader->install('https://downloads.wordpress.org/plugin/' . $sitekit_slug . '.latest-stable.zip');
-    }
 
-    if (file_exists(WP_PLUGIN_DIR . '/' . $sitekit_main_file) && !is_plugin_active($sitekit_main_file)) {
-        activate_plugin($sitekit_main_file);
-    }
+    // ===================================================
+    // 2. Header Footer Code Manager Plugin (HFCM)
+    // ===================================================
+    $hfcm_slug      = 'header-footer-code-manager';
+    $hfcm_main_file = 'header-footer-code-manager/99robots-header-footer-code-manager.php';
 
-    
-    // =======================================
-    // 3. Facebook Pixel – Official Plugin
-    // =======================================
-    $facebook_pixel_slug      = 'official-facebook-pixel';
-    $facebook_pixel_main_file = 'official-facebook-pixel/facebook-pixel.php';
-    $plugin_path              = WP_PLUGIN_DIR . '/' . $facebook_pixel_slug;
-    
-    if (!is_dir($plugin_path)) {
+    if (!is_dir(WP_PLUGIN_DIR . '/' . $hfcm_slug)) {
         $upgrader = new Plugin_Upgrader(new Automatic_Upgrader_Skin());
-        $upgrader->install('https://downloads.wordpress.org/plugin/' . $facebook_pixel_slug . '.latest-stable.zip');
+        $upgrader->install('https://downloads.wordpress.org/plugin/' . $hfcm_slug . '.latest-stable.zip');
     }
-    
-    // // بعد ما يخلص التحميل، اتأكد إن الملف فعلاً موجود قبل التفعيل
-    // if (file_exists(WP_PLUGIN_DIR . '/' . $facebook_pixel_main_file)) {
-    //     if (!is_plugin_active($facebook_pixel_main_file)) {
-    //         activate_plugin($facebook_pixel_main_file);
-    //     }
-    // }
 
+    if (file_exists(WP_PLUGIN_DIR . '/' . $hfcm_main_file) && !is_plugin_active($hfcm_main_file)) {
+        activate_plugin($hfcm_main_file);
+    }
+
+	
+    // =======================================
+    // 3. PixelYourSite Plugin
+    // =======================================
+    $pys_slug      = 'pixelyoursite';
+    $pys_main_file = 'pixelyoursite/facebook-pixel-master.php';
+
+    if (!is_dir(WP_PLUGIN_DIR . '/' . $pys_slug)) {
+        $upgrader = new Plugin_Upgrader(new Automatic_Upgrader_Skin());
+        $upgrader->install('https://downloads.wordpress.org/plugin/' . $pys_slug . '.latest-stable.zip');
+    }
+
+    if (file_exists(WP_PLUGIN_DIR . '/' . $pys_main_file) && !is_plugin_active($pys_main_file)) {
+        activate_plugin($pys_main_file);
+    }
+
+    
 }
 
 function create_custom_thankyou_posts_on_theme_activation() {

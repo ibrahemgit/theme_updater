@@ -234,11 +234,11 @@ $('.flx-thx').click(function(){
 
 
 
-$('.popubleadformover, span.closepop').on('click', function() {
+$('.popubleadformover, span.closepop , .openform , .holdbrshor').on('click', function() {
   $('.popubleadform').toggleClass('active');
 });
 
-$('.subform').on('click', function() {
+$('.subform').on('click', function() {s
   $('.popubleadform').toggleClass('active');
 });
 

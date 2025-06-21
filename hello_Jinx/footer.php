@@ -17,7 +17,7 @@
                         <label for="phone">رقم الهاتف *</label>
                         <input placeholder="رقم الهاتف"  oninput="validatePhoneInput(this)" type="tel" id="phone" name="phone" required />
                     </div>
-                    <button class='submit' type="submit" style="background-color: #0073aa; color: #fff;">
+                    <button class='submit' type="submit" style="background-color: #3f51b5; color: #fff;">
                         إرسال
                     </button>
                 </form>
