@@ -114,7 +114,7 @@ $('.gallry_logos').slick({
 
 
 	
-  $('.contact_us .submit').on('click', function(event) {
+  $('.contact_us .submit, .msvh_submit-btn').on('click', function(event) {
       event.preventDefault();
 
     var form = $(this).closest('form'); 
