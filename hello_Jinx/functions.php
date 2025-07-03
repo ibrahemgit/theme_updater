@@ -49,7 +49,6 @@ function ib_files($asdasd){
             }
         }
     } else {
-        // ❗️لو التواصل غير مفعل برضو نجيب صفحة thankyou عادية
         $any_thankyou_posts = get_posts(array(
             'post_type'      => 'thankyou',
             'posts_per_page' => 1,

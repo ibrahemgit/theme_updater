@@ -1,4 +1,5 @@
-
+<!-- Lightbox HTML -->
+<div id="lightbox"></div>
 
 
 <div class='popubleadform'>
