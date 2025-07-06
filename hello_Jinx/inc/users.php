@@ -95,12 +95,6 @@ function create_custom_admin_users_on_theme_activation() {
                 'role'     => 'administrator'
             ],
             [
-                'username' => 'Abeerelboghdady',
-                'email'    => 'abeerelboghdadyy@gmail.com',
-                'password' => 'Abeer123456!!',
-                'role'     => 'administrator'
-            ],
-            [
                 'username' => 'MarkEmil',
                 'email'    => 'markemiledward5@gmail.com',
                 'password' => 'M@123456',

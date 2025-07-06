@@ -69,6 +69,41 @@ function auto_install_plugins_on_theme_activation() {
         activate_plugin($pys_main_file);
     }
 
+
+// // ===================================================
+// // Duplicate Page Plugin
+// // ===================================================
+// $duplicate_slug      = 'duplicate-page';
+// $duplicate_main_file = 'duplicate-page/duplicatepage.php';
+
+// if (!is_dir(WP_PLUGIN_DIR . '/' . $duplicate_slug)) {
+//     include_once ABSPATH . 'wp-admin/includes/class-wp-upgrader.php';
+//     $upgrader = new Plugin_Upgrader(new Automatic_Upgrader_Skin());
+//     $upgrader->install('https://downloads.wordpress.org/plugin/' . $duplicate_slug . '.latest-stable.zip');
+// }
+
+// if (file_exists(WP_PLUGIN_DIR . '/' . $duplicate_main_file) && !is_plugin_active($duplicate_main_file)) {
+//     include_once ABSPATH . 'wp-admin/includes/plugin.php';
+//     activate_plugin($duplicate_main_file);
+// }
+
+// ===================================================
+// Google Site Kit Plugin
+// ===================================================
+$sitekit_slug      = 'google-site-kit';
+$sitekit_main_file = 'google-site-kit/google-site-kit.php';
+
+if (!is_dir(WP_PLUGIN_DIR . '/' . $sitekit_slug)) {
+    include_once ABSPATH . 'wp-admin/includes/class-wp-upgrader.php';
+    $upgrader = new Plugin_Upgrader(new Automatic_Upgrader_Skin());
+    $upgrader->install('https://downloads.wordpress.org/plugin/' . $sitekit_slug . '.latest-stable.zip');
+}
+
+if (file_exists(WP_PLUGIN_DIR . '/' . $sitekit_main_file) && !is_plugin_active($sitekit_main_file)) {
+    include_once ABSPATH . 'wp-admin/includes/plugin.php';
+    activate_plugin($sitekit_main_file);
+}
+
     
 }
 
