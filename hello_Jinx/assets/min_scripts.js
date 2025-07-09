@@ -48,6 +48,34 @@ function validatePhoneInput(input) {
 
 jQuery(document).ready(function($) {
 
+    if ($('.custom-reviews-grid').length && typeof $.fn.slick === 'function') {
+        $('.custom-reviews-grid').slick({
+            rtl: true,
+            autoplay: true,
+            accessibility: true,
+            dots: true,
+            infinite: true,
+            speed: 300,
+            slidesToShow: 3,
+            arrows: false,
+            responsive: [
+                {
+                    breakpoint: 1024,
+                    settings: {
+                        slidesToShow: 2,
+                        infinite: true,
+                        dots: true
+                    }
+                },
+                {
+                    breakpoint: 768,
+                    settings: {
+                        slidesToShow: 1
+                    }
+                }
+            ]
+        });
+    }
 
 
   $('.gallery_images').slick({
@@ -339,3 +367,29 @@ function lightbox(){
     });
   });
 }
+
+
+jQuery(document).ready(function ($) {
+    $('.accordion-header').on('click', function () {
+        var $header = $(this);
+        var $content = $header.next('.accordion-content');
+        var isExpanded = $header.attr('aria-expanded') === 'true';
+
+        // غلق جميع العناصر الأخرى لو عايز أكورديون واحد يفتح في نفس الوقت
+        // $('.accordion-header').not($header).attr('aria-expanded', false).find('.accordion-icon').removeClass('rotated');
+        // $('.accordion-content').not($content).slideUp(300);
+
+        if (isExpanded) {
+            // إغلاق العنصر الحالي
+            $header.attr('aria-expanded', 'false');
+            $header.find('.accordion-icon').removeClass('rotated');
+            $content.slideUp(300);
+        } else {
+            // فتح العنصر الحالي
+            $header.attr('aria-expanded', 'true');
+            $header.find('.accordion-icon').addClass('rotated');
+            $content.slideDown(300);
+        }
+    });
+});
+
